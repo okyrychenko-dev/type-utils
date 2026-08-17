@@ -1,0 +1,83 @@
+{
+  "name": "@okyrychenko-dev/type-utils",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Type-safe guards, assertions, and utility types for narrowing unknown values in TypeScript",
+  "homepage": "https://github.com/okyrychenko-dev/type-utils#readme",
+  "bugs": {
+    "url": "https://github.com/okyrychenko-dev/type-utils/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okyrychenko-dev/type-utils.git"
+  },
+  "license": "MIT",
+  "author": "Oleksii Kyrychenko alexey.kirichenko@gmail.com",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "npm run lint:fix && prettier --write \"src/**/*.ts\"",
+    "format:check": "npm run lint && prettier --check \"src/**/*.ts\"",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test:run && npm run build",
+    "prepare": "husky"
+  },
+  "keywords": [
+    "typescript",
+    "type-guards",
+    "type-safety",
+    "assertions",
+    "narrowing",
+    "type-narrowing",
+    "utility-types",
+    "runtime-validation",
+    "exhaustive-check"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
+    "@vitest/coverage-v8": "^4.0.9",
+    "@vitest/ui": "^4.0.9",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "husky": "^9.1.7",
+    "prettier": "^3.6.2",
+    "tsup": "^8.5.1",
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.46.4",
+    "vitest": "^4.1.10"
+  },
+  "allowScripts": {
+    "esbuild@0.27.2": true
+  }
+}
