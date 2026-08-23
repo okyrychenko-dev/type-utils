@@ -8,9 +8,11 @@ export type ValueOf<T extends Record<PropertyKey, unknown>> = T[keyof T];
 
 export type NonEmptyArray<T> = [T, ...Array<T>];
 
-export type ArrayElement<T extends ReadonlyArray<unknown>> =
+export type ElementOf<T extends ReadonlyArray<unknown>> =
   T extends ReadonlyArray<infer U> ? U : never;
 
 export type Mutable<T> = { -readonly [K in keyof T]: T[K] };
 
 export type Prettify<T> = { [K in keyof T]: T[K] } & {};
+
+export type Awaitable<T> = T | Promise<T>;

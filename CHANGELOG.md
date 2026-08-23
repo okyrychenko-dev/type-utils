@@ -21,4 +21,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `assertTrue`, `assertFalse`, `assertDefined`.
 - Exhaustiveness checking via `assertNever`.
 - Utility types: `Nullable`, `Nullish`, `Optional`, `ValueOf`, `NonEmptyArray`,
-  `ArrayElement`, `Mutable`, `Prettify`.
+  `ElementOf`, `Mutable`, `Prettify`.

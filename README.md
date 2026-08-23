@@ -184,7 +184,7 @@ type C = Nullish<string>; // string | null | undefined
 
 ```ts
 import type {
-  ArrayElement,
+  ElementOf,
   Mutable,
   NonEmptyArray,
   Prettify,
@@ -192,11 +192,12 @@ import type {
 } from "@okyrychenko-dev/type-utils";
 
 type Status = { readonly code: 200 | 404 | 500 };
+
 type StatusCode = ValueOf<Status>; // 200 | 404 | 500
 
 type Tags = NonEmptyArray<string>; // [string, ...string[]] — at least one element
 
-type Item = ArrayElement<readonly number[]>; // number
+type Item = ElementOf<readonly number[]>; // number
 
 type MutableStatus = Mutable<Status>; // { code: 200 | 404 | 500 }
 
