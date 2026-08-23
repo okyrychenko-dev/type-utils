@@ -1,6 +1,6 @@
 {
   "name": "@okyrychenko-dev/type-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Type-safe guards, assertions, and utility types for narrowing unknown values in TypeScript",
   "homepage": "https://github.com/okyrychenko-dev/type-utils#readme",
@@ -32,8 +32,10 @@
   ],
   "scripts": {
     "build": "tsup",
+    "dev": "tsup --watch",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build",
+    "release:check": "npm run clean && npm run test:run && npm run typecheck && npm run lint && npm run format:check && npm run build",
+    "prepublishOnly": "npm run release:check",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",

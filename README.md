@@ -10,16 +10,28 @@
 
 `type-utils` gives you three composable layers:
 
-- **Guards** — `is*` functions that narrow `unknown` values with a type predicate
-- **Assertions** — `assert*` functions that narrow in place or throw a `TypeError`/`Error`
-- **Utility types** — small type-level helpers (`Nullable`, `Nullish`, `Optional`)
+- **Guards** — `is*` functions that narrow `unknown` values with type predicates
+- **Assertions** — `assert*` functions that narrow in place or throw `TypeError`/`Error`
+- **Utility types** — small type-level helpers for common value shapes and transformations
 
 It has zero runtime dependencies and ships both ESM and CJS builds.
+
+## Features
+
+- Runtime guards for primitives, collections, objects, functions, and built-ins
+- Assertion functions and `assertNever` for safe control-flow narrowing
+- Small composable utility types, including `Nullable`, `ValueOf`, and `NonEmptyArray`
+- Type predicates and assertion signatures that preserve TypeScript narrowing
+- Zero runtime dependencies and dual ESM/CJS builds
 
 ## Installation
 
 ```bash
 npm install @okyrychenko-dev/type-utils
+# or
+yarn add @okyrychenko-dev/type-utils
+# or
+pnpm add @okyrychenko-dev/type-utils
 ```
 
 ## Quick Start
@@ -203,6 +215,18 @@ type MutableStatus = Mutable<Status>; // { code: 200 | 404 | 500 }
 
 type Flat = Prettify<{ a: string } & { b: number }>; // { a: string; b: number }
 ```
+
+## API Reference
+
+All public APIs are available from the root package import.
+
+| Area | Exports |
+| --- | --- |
+| Primitive guards | `isString`, `isNumber`, `isFiniteNumber`, `isBoolean`, `isBigInt`, `isSymbol`, `isUndefined`, `isNull`, `isNullish`, `isDefined` |
+| Collection guards | `isArray`, `isReadonlyArray`, `isMap`, `isSet`, `isWeakMap`, `isWeakSet` |
+| Object and built-in guards | `isObject`, `isPlainObject`, `isFunction`, `isDate`, `isRegExp`, `isPromise`, `isError` |
+| Assertions | `assertString`, `assertNumber`, `assertBoolean`, `assertSymbol`, `assertTrue`, `assertFalse`, `assertDefined`, `assertNever` |
+| Utility types | `Nullable`, `Nullish`, `Optional`, `ValueOf`, `NonEmptyArray`, `ElementOf`, `Mutable`, `Prettify`, `Awaitable` |
 
 ## Development
 
