@@ -1,3 +1,5 @@
+import { passesIntrinsicBrandCheck, passesIntrinsicGetterCheck } from "./intrinsic";
+
 export function isArray(value: unknown): value is Array<unknown> {
   return Array.isArray(value);
 }
@@ -7,17 +9,21 @@ export function isReadonlyArray(value: unknown): value is ReadonlyArray<unknown>
 }
 
 export function isMap(value: unknown): value is Map<unknown, unknown> {
-  return value instanceof Map;
+  return passesIntrinsicGetterCheck(Map.prototype, "size", value);
 }
 
 export function isSet(value: unknown): value is Set<unknown> {
-  return value instanceof Set;
+  return passesIntrinsicGetterCheck(Set.prototype, "size", value);
 }
 
 export function isWeakMap(value: unknown): value is WeakMap<object, unknown> {
-  return value instanceof WeakMap;
+  return passesIntrinsicBrandCheck(value, (candidate) => {
+    WeakMap.prototype.has.call(candidate, {});
+  });
 }
 
 export function isWeakSet(value: unknown): value is WeakSet<object> {
-  return value instanceof WeakSet;
+  return passesIntrinsicBrandCheck(value, (candidate) => {
+    WeakSet.prototype.has.call(candidate, {});
+  });
 }
