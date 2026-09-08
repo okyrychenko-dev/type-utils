@@ -1,64 +1,71 @@
 import { isBoolean, isNullish, isNumber, isString, isSymbol } from "../guards";
+import { AssertionError } from "./assertion-error";
+import { toAssertionMessage } from "./assertion-message";
+import type { AssertionMessage } from "./assertion-error";
+
+function failAssertion(message: AssertionMessage, actual: unknown): never {
+  throw new AssertionError(toAssertionMessage(message), actual);
+}
 
 export function assertString(
   value: unknown,
-  message = "Expected value to be a string."
+  message: AssertionMessage = "Expected value to be a string."
 ): asserts value is string {
   if (!isString(value)) {
-    throw new TypeError(message);
+    failAssertion(message, value);
   }
 }
 
 export function assertNumber(
   value: unknown,
-  message = "Expected value to be a number."
+  message: AssertionMessage = "Expected value to be a number."
 ): asserts value is number {
   if (!isNumber(value)) {
-    throw new TypeError(message);
+    failAssertion(message, value);
   }
 }
 
 export function assertBoolean(
   value: unknown,
-  message = "Expected value to be a boolean."
+  message: AssertionMessage = "Expected value to be a boolean."
 ): asserts value is boolean {
   if (!isBoolean(value)) {
-    throw new TypeError(message);
+    failAssertion(message, value);
   }
 }
 
 export function assertSymbol(
   value: unknown,
-  message = "Expected value to be a symbol."
+  message: AssertionMessage = "Expected value to be a symbol."
 ): asserts value is symbol {
   if (!isSymbol(value)) {
-    throw new TypeError(message);
+    failAssertion(message, value);
   }
 }
 
 export function assertTrue(
   condition: boolean,
-  message = "Expected condition to be true."
+  message: AssertionMessage = "Expected condition to be true."
 ): asserts condition {
   if (!condition) {
-    throw new Error(message);
+    failAssertion(message, condition);
   }
 }
 
 export function assertFalse(
   condition: boolean,
-  message = "Expected condition to be false."
+  message: AssertionMessage = "Expected condition to be false."
 ): asserts condition is false {
   if (condition) {
-    throw new Error(message);
+    failAssertion(message, condition);
   }
 }
 
 export function assertDefined<T>(
   value: T,
-  message = "Expected value to be defined."
+  message: AssertionMessage = "Expected value to be defined."
 ): asserts value is NonNullable<T> {
   if (isNullish(value)) {
-    throw new Error(message);
+    failAssertion(message, value);
   }
 }
