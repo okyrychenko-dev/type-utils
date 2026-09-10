@@ -19,10 +19,16 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
@@ -47,6 +53,9 @@
     "test:coverage": "vitest run --coverage",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test:run && npm run build",
     "prepare": "husky"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "keywords": [
     "typescript",
