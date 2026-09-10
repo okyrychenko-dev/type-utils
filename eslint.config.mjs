@@ -1,7 +1,7 @@
 import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
+import tseslint from "typescript-eslint";
 
 export default [
   eslint.configs.recommended,
@@ -10,7 +10,9 @@ export default [
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        projectService: {
+          allowDefaultProject: ["*.config.ts", "eslint.config.mjs", "scripts/*.mjs"],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -89,7 +91,7 @@ export default [
     },
   },
   {
-    ignores: ["dist/**", "node_modules/**", "*.config.*"],
+    ignores: ["dist/**", "node_modules/**", "coverage/**"],
   },
   {
     files: ["**/__tests__/**/*.ts", "**/*.test.ts", "src/test/**"],
