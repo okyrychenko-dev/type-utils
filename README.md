@@ -11,10 +11,12 @@
 `type-utils` gives you three composable layers:
 
 - **Guards** — `is*` functions that narrow `unknown` values with type predicates
-- **Assertions** — `assert*` functions that narrow in place or throw `TypeError`/`Error`
+- **Assertions** — `assert*` functions that narrow in place or throw `AssertionError`
 - **Utility types** — small type-level helpers for common value shapes and transformations
 
-It has zero runtime dependencies and ships both ESM and CJS builds.
+It has zero runtime dependencies and ships both ESM and CJS builds. Choose it when you need to
+narrow application-boundary values without schemas, parsing, coercion, or transformation; use a
+schema library when you need those capabilities.
 
 ## Features
 
@@ -97,12 +99,38 @@ import {
 } from "@okyrychenko-dev/type-utils";
 
 isArray([1, 2, 3]); // true
-isReadonlyArray([1, 2, 3] as const); // true
+isReadonlyArray([1, 2, 3]); // true
 isMap(new Map()); // true
 isSet(new Set()); // true
 isWeakMap(new WeakMap()); // true
 isWeakSet(new WeakSet()); // true
 ```
+
+### Composition
+
+```ts
+import {
+  hasProperty,
+  isArrayOf,
+  isInstanceOf,
+  isKeyOf,
+  isNonEmptyArray,
+  isOneOf,
+  isRecordOf,
+  isString,
+} from "@okyrychenko-dev/type-utils";
+
+isArrayOf(["a", "b"], isString); // true, narrows to string[]
+isRecordOf({ first: "a" }, isString); // true, narrows record values to string
+hasProperty(payload, "items"); // own properties only
+isKeyOf(user, key); // narrows key to keyof typeof user
+isOneOf(status, ["open", "closed"] as const); // narrows to the literal union
+isInstanceOf(value, URL); // narrows to URL
+isNonEmptyArray(items); // narrows to a non-empty tuple
+```
+
+Composition guards validate values without parsing, coercing, or transforming them.
+`hasProperty` considers own properties only, while `isKeyOf` also accepts inherited properties.
 
 ### Object and function
 
@@ -118,6 +146,9 @@ isPlainObject(new Map()); // false
 isFunction(() => undefined); // true
 ```
 
+`isFunction` proves only that a value is callable; it does not establish which arguments are safe
+to pass. Narrow to a more specific callable type before invoking an unknown function.
+
 ### Built-ins
 
 ```ts
@@ -129,6 +160,13 @@ isPromise(Promise.resolve()); // true
 isPromise({ then: () => undefined }); // false — thenables are not Promise instances
 isError(new TypeError("boom")); // true — subclasses included
 ```
+
+### Cross-realm behavior
+
+Arrays, dates, regular expressions, maps, sets, weak maps, and weak sets are recognized across
+JavaScript realms. Promise and Error recognition also supports common foreign-realm values, but
+their runtime tags can be spoofed; these guards are classification helpers, not authenticity or
+security checks. Thenables are not treated as promises.
 
 ## Assertions
 
@@ -158,7 +196,9 @@ assertDefined(user, "User must be defined."); // narrows to NonNullable<T>
 ```
 
 Every assertion accepts an optional custom message as its last argument; each has a sensible
-default.
+default. A message may also be a function, which is evaluated only when the assertion fails.
+Failures are `AssertionError` instances (and therefore also `TypeError` instances), with the
+rejected value available through both `actual` and `cause`.
 
 ## Exhaustiveness Checking
 
@@ -220,13 +260,14 @@ type Flat = Prettify<{ a: string } & { b: number }>; // { a: string; b: number }
 
 All public APIs are available from the root package import.
 
-| Area | Exports |
-| --- | --- |
-| Primitive guards | `isString`, `isNumber`, `isFiniteNumber`, `isBoolean`, `isBigInt`, `isSymbol`, `isUndefined`, `isNull`, `isNullish`, `isDefined` |
-| Collection guards | `isArray`, `isReadonlyArray`, `isMap`, `isSet`, `isWeakMap`, `isWeakSet` |
-| Object and built-in guards | `isObject`, `isPlainObject`, `isFunction`, `isDate`, `isRegExp`, `isPromise`, `isError` |
-| Assertions | `assertString`, `assertNumber`, `assertBoolean`, `assertSymbol`, `assertTrue`, `assertFalse`, `assertDefined`, `assertNever` |
-| Utility types | `Nullable`, `Nullish`, `Optional`, `ValueOf`, `NonEmptyArray`, `ElementOf`, `Mutable`, `Prettify`, `Awaitable` |
+| Area                       | Exports                                                                                                                                                            |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Primitive guards           | `isString`, `isNumber`, `isFiniteNumber`, `isBoolean`, `isBigInt`, `isSymbol`, `isUndefined`, `isNull`, `isNullish`, `isDefined`                                   |
+| Collection guards          | `isArray`, `isReadonlyArray`, `isMap`, `isSet`, `isWeakMap`, `isWeakSet`                                                                                           |
+| Composition guards         | `isArrayOf`, `isRecordOf`, `hasProperty`, `isKeyOf`, `isOneOf`, `isInstanceOf`, `isNonEmptyArray`, `Guard`                                                         |
+| Object and built-in guards | `isObject`, `isPlainObject`, `isFunction`, `isDate`, `isRegExp`, `isPromise`, `isError`                                                                            |
+| Assertions                 | `AssertionError`, `AssertionMessage`, `assertString`, `assertNumber`, `assertBoolean`, `assertSymbol`, `assertTrue`, `assertFalse`, `assertDefined`, `assertNever` |
+| Utility types              | `Nullable`, `Nullish`, `Optional`, `ValueOf`, `NonEmptyArray`, `ElementOf`, `Mutable`, `Prettify`, `Awaitable`                                                     |
 
 ## Development
 
