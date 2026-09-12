@@ -1,6 +1,6 @@
 {
   "name": "@okyrychenko-dev/type-utils",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "Type-safe guards, assertions, and utility types for narrowing unknown values in TypeScript",
   "homepage": "https://github.com/okyrychenko-dev/type-utils#readme",
@@ -78,8 +78,8 @@
     "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
-    "@vitest/coverage-v8": "^4.0.9",
-    "@vitest/ui": "^4.0.9",
+    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/ui": "^4.1.11",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
@@ -89,7 +89,7 @@
     "tsup": "^8.5.1",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.46.4",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.11"
   },
   "allowScripts": {
     "esbuild@0.27.2": true
